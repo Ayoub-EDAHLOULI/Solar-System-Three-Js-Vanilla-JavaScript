@@ -102,13 +102,7 @@ const planets = [
         name: "Phobos",
         radius: 0.09,
         distance: 0.8,
-        speed: 0.01,
-      },
-      {
-        name: "Deimos",
-        radius: 0.2,
-        distance: 3,
-        speed: 0.01,
+        speed: 0.02,
       },
     ],
   },
@@ -154,6 +148,9 @@ function createPlanets() {
     planetMesh.position.x = planet.distance;
     scene.add(planetMesh);
 
+    // Store planet's mesh in planet object for easy access in animation loop
+    planet.mesh = planetMesh;
+
     if (planet.moons > 0) {
       // Ensure planet.moon is an array
       const moons = Array.isArray(planet.moon) ? planet.moon : [planet.moon];
@@ -176,7 +173,7 @@ createPlanets();
 scene.add(sun);
 
 // Set camera position
-camera.position.z = 5;
+camera.position.z = 20;
 
 // Add OrbitControls
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -184,7 +181,7 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.25;
 controls.enableZoom = true;
 controls.maxDistance = 200;
-controls.minDistance = 20;
+controls.minDistance = 5;
 
 // Handle window resizing
 window.addEventListener("resize", () => {
@@ -198,7 +195,14 @@ function animate() {
   requestAnimationFrame(animate);
 
   // Rotate the Sun around its axis
-  sun.rotation.y += 0.0005; // Rotate Sun around Y axis (you can adjust the speed here)
+  sun.rotation.y += 0.0005;
+
+  // Rotate each planet around the Sun based on its distance and speed
+  planets.forEach((planet) => {
+    if (planet.mesh) {
+      planet.mesh.rotation.y += planet.speed;
+    }
+  });
 
   // Update controls for smooth damping
   controls.update();
