@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { createStarField } from "./stars.js";
 
 // Initialize scene, camera, renderer
 const scene = new THREE.Scene();
@@ -20,6 +21,10 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 // Append renderer to container
 const container = document.getElementById("solar-system");
 container.appendChild(renderer.domElement);
+
+// Add star field to scene
+const starField = createStarField();
+scene.add(starField);
 
 // Inisialize Geometry, Material, Mesh
 const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
@@ -49,6 +54,9 @@ const saturnTexture = textureLoader.load("/textures/2k_saturn.jpg");
 const uranusTexture = textureLoader.load("/textures/2k_uranus.jpg");
 const neptuneTexture = textureLoader.load("/textures/2k_neptune.jpg");
 const moonTexture = textureLoader.load("/textures/2k_moon.jpg");
+const backgroundTexture = textureLoader.load(
+  "/textures/2k_stars_milky_way.jpg"
+);
 
 // Create Planets Material
 const mercuryMaterial = new THREE.MeshStandardMaterial({ map: mercuryTexture });
