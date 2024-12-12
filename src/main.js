@@ -201,6 +201,10 @@ function animate() {
   planets.forEach((planet) => {
     if (planet.mesh) {
       planet.mesh.rotation.y += planet.speed;
+      planet.mesh.position.x =
+        planet.distance * Math.cos(planet.mesh.rotation.y);
+      planet.mesh.position.z =
+        planet.distance * Math.sin(planet.mesh.rotation.y);
     }
   });
 
