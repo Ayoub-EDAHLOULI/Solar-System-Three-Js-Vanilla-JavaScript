@@ -10,7 +10,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   400
 );
-camera.position.z = 100;
+camera.position.z = 20;
 camera.position.y = 5;
 const renderer = new THREE.WebGLRenderer();
 
@@ -36,6 +36,9 @@ const sunMaterial = new THREE.MeshBasicMaterial({
 const sun = new THREE.Mesh(sphereGeometry, sunMaterial);
 sun.scale.setScalar(2); // Scale Sun
 
+// Add Sun to scene
+scene.add(sun);
+
 // Load Planets Texture
 const mercuryTexture = textureLoader.load("/textures/2k_mercury.jpg");
 const venusTexture = textureLoader.load("/textures/2k_venus_surface.jpg");
@@ -48,15 +51,15 @@ const neptuneTexture = textureLoader.load("/textures/2k_neptune.jpg");
 const moonTexture = textureLoader.load("/textures/2k_moon.jpg");
 
 // Create Planets Material
-const mercuryMaterial = new THREE.MeshBasicMaterial({ map: mercuryTexture });
-const venusMaterial = new THREE.MeshBasicMaterial({ map: venusTexture });
-const earthMaterial = new THREE.MeshBasicMaterial({ map: earthTexture });
-const marsMaterial = new THREE.MeshBasicMaterial({ map: marsTexture });
-const jupiterMaterial = new THREE.MeshBasicMaterial({ map: jupiterTexture });
-const saturnMaterial = new THREE.MeshBasicMaterial({ map: saturnTexture });
-const uranusMaterial = new THREE.MeshBasicMaterial({ map: uranusTexture });
-const neptuneMaterial = new THREE.MeshBasicMaterial({ map: neptuneTexture });
-const moonMaterial = new THREE.MeshBasicMaterial({ map: moonTexture });
+const mercuryMaterial = new THREE.MeshStandardMaterial({ map: mercuryTexture });
+const venusMaterial = new THREE.MeshStandardMaterial({ map: venusTexture });
+const earthMaterial = new THREE.MeshStandardMaterial({ map: earthTexture });
+const marsMaterial = new THREE.MeshStandardMaterial({ map: marsTexture });
+const jupiterMaterial = new THREE.MeshStandardMaterial({ map: jupiterTexture });
+const saturnMaterial = new THREE.MeshStandardMaterial({ map: saturnTexture });
+const uranusMaterial = new THREE.MeshStandardMaterial({ map: uranusTexture });
+const neptuneMaterial = new THREE.MeshStandardMaterial({ map: neptuneTexture });
+const moonMaterial = new THREE.MeshStandardMaterial({ map: moonTexture });
 
 // Create an array of planets and their properties (name, radius, distance from sun, speed of rotation, number of moons and their properties)
 const planets = [
@@ -169,11 +172,12 @@ function createPlanets() {
 // Call createPlanets function
 createPlanets();
 
-// Add Sun to scene
-scene.add(sun);
+// add lights
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
+scene.add(ambientLight);
 
-// Set camera position
-camera.position.z = 20;
+const pointLight = new THREE.PointLight(0xffffff, 800);
+scene.add(pointLight);
 
 // Add OrbitControls
 const controls = new OrbitControls(camera, renderer.domElement);
