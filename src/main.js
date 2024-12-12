@@ -20,7 +20,14 @@ container.appendChild(renderer.domElement);
 
 // Inisialize Geometry, Material, Mesh
 const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
-const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+const sphereMaterial = new THREE.MeshBasicMaterial();
+
+// Add Texture to Sphere
+const textureLoader = new THREE.TextureLoader();
+const sunTexture = textureLoader.load("/textures/2k_sun.jpg");
+sphereMaterial.map = sunTexture;
+
+// Create sphere
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 
 // Add sphere to scene
