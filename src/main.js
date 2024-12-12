@@ -54,6 +54,80 @@ const uranusMaterial = new THREE.MeshBasicMaterial({ map: uranusTexture });
 const neptuneMaterial = new THREE.MeshBasicMaterial({ map: neptuneTexture });
 const moonMaterial = new THREE.MeshBasicMaterial({ map: moonTexture });
 
+// Create an array of planets and their properties (name, radius, distance from sun, speed of rotation, number of moons and their properties)
+const planets = [
+  {
+    name: "Mercury",
+    radius: 0.383,
+    distance: 0.39,
+    speed: 0.017,
+    material: mercuryMaterial,
+    moons: 0,
+  },
+  {
+    name: "Venus",
+    radius: 0.949,
+    distance: 0.72,
+    speed: 0.007,
+    material: venusMaterial,
+    moons: 0,
+  },
+  {
+    name: "Earth",
+    radius: 1,
+    distance: 1,
+    speed: 0.01,
+    material: earthMaterial,
+    moons: 1,
+    moon: {
+      name: "Moon",
+      radius: 0.2724,
+      distance: 0.00257,
+      speed: 0.01,
+    },
+  },
+  {
+    name: "Mars",
+    radius: 0.532,
+    distance: 1.52,
+    speed: 0.009,
+    material: marsMaterial,
+    moons: 2,
+  },
+  {
+    name: "Jupiter",
+    radius: 11.21,
+    distance: 5.2,
+    speed: 0.004,
+    material: jupiterMaterial,
+    moons: 79,
+  },
+  {
+    name: "Saturn",
+    radius: 9.45,
+    distance: 9.58,
+    speed: 0.003,
+    material: saturnMaterial,
+    moons: 82,
+  },
+  {
+    name: "Uranus",
+    radius: 4.01,
+    distance: 19.22,
+    speed: 0.002,
+    material: uranusMaterial,
+    moons: 27,
+  },
+  {
+    name: "Neptune",
+    radius: 3.88,
+    distance: 30.05,
+    speed: 0.001,
+    material: neptuneMaterial,
+    moons: 14,
+  },
+];
+
 // Add Sun to scene
 scene.add(sun);
 
