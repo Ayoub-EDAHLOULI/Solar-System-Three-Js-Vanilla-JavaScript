@@ -3,12 +3,15 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 // Initialize scene, camera, renderer
 const scene = new THREE.Scene();
+// initialize the camera
 const camera = new THREE.PerspectiveCamera(
-  65,
+  80,
   window.innerWidth / window.innerHeight,
   0.1,
-  800
+  400
 );
+camera.position.z = 100;
+camera.position.y = 5;
 const renderer = new THREE.WebGLRenderer();
 
 // Set renderer size
@@ -19,7 +22,7 @@ const container = document.getElementById("solar-system");
 container.appendChild(renderer.domElement);
 
 // Inisialize Geometry, Material, Mesh
-const sphereGeometry = new THREE.SphereGeometry(2, 32, 32);
+const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
 const sphereMaterial = new THREE.MeshBasicMaterial();
 
 // Create Sun Material and Add Texture to Sphere
@@ -31,6 +34,7 @@ const sunMaterial = new THREE.MeshBasicMaterial({
   emissive: 0xffff00,
 });
 const sun = new THREE.Mesh(sphereGeometry, sunMaterial);
+sun.scale.setScalar(2); // Scale Sun
 
 // Load Planets Texture
 const mercuryTexture = textureLoader.load("/textures/2k_mercury.jpg");
@@ -96,8 +100,8 @@ const planets = [
     moon: [
       {
         name: "Phobos",
-        radius: 0.11,
-        distance: 2,
+        radius: 0.09,
+        distance: 0.8,
         speed: 0.01,
       },
       {
@@ -114,33 +118,7 @@ const planets = [
     distance: 16,
     speed: 0.004,
     material: jupiterMaterial,
-    moons: 4,
-    moon: [
-      {
-        name: "Io",
-        radius: 0.4,
-        distance: 1.5,
-        speed: 0.01,
-      },
-      {
-        name: "Europa",
-        radius: 0.3,
-        distance: 2.5,
-        speed: 0.01,
-      },
-      {
-        name: "Ganymede",
-        radius: 0.5,
-        distance: 4,
-        speed: 0.01,
-      },
-      {
-        name: "Callisto",
-        radius: 0.45,
-        distance: 6,
-        speed: 0.01,
-      },
-    ],
+    moons: 0,
   },
   {
     name: "Saturn",
@@ -148,51 +126,7 @@ const planets = [
     distance: 20,
     speed: 0.003,
     material: saturnMaterial,
-    moons: 7,
-    moon: [
-      {
-        name: "Mimas",
-        radius: 0.3,
-        distance: 0.1,
-        speed: 0.01,
-      },
-      {
-        name: "Enceladus",
-        radius: 0.35,
-        distance: 0.2,
-        speed: 0.01,
-      },
-      {
-        name: "Tethys",
-        radius: 0.4,
-        distance: 0.3,
-        speed: 0.01,
-      },
-      {
-        name: "Dione",
-        radius: 0.45,
-        distance: 0.4,
-        speed: 0.01,
-      },
-      {
-        name: "Rhea",
-        radius: 0.5,
-        distance: 0.5,
-        speed: 0.01,
-      },
-      {
-        name: "Titan",
-        radius: 0.8,
-        distance: 0.6,
-        speed: 0.01,
-      },
-      {
-        name: "Iapetus",
-        radius: 0.6,
-        distance: 0.7,
-        speed: 0.01,
-      },
-    ],
+    moons: 0,
   },
   {
     name: "Uranus",
@@ -200,39 +134,7 @@ const planets = [
     distance: 24,
     speed: 0.002,
     material: uranusMaterial,
-    moons: 5,
-    moon: [
-      {
-        name: "Miranda",
-        radius: 0.025,
-        distance: 0.0013,
-        speed: 0.01,
-      },
-      {
-        name: "Ariel",
-        radius: 0.036,
-        distance: 0.00252,
-        speed: 0.01,
-      },
-      {
-        name: "Umbriel",
-        radius: 0.046,
-        distance: 0.00414,
-        speed: 0.01,
-      },
-      {
-        name: "Titania",
-        radius: 0.079,
-        distance: 0.00718,
-        speed: 0.01,
-      },
-      {
-        name: "Oberon",
-        radius: 0.076,
-        distance: 0.0091,
-        speed: 0.01,
-      },
-    ],
+    moons: 0,
   },
   {
     name: "Neptune",
@@ -240,21 +142,7 @@ const planets = [
     distance: 28,
     speed: 0.001,
     material: neptuneMaterial,
-    moons: 2,
-    moon: [
-      {
-        name: "Triton",
-        radius: 0.212,
-        distance: 0.00355,
-        speed: 0.01,
-      },
-      {
-        name: "Proteus",
-        radius: 0.05,
-        distance: 0.00393,
-        speed: 0.01,
-      },
-    ],
+    moons: 0,
   },
 ];
 
@@ -267,16 +155,16 @@ function createPlanets() {
     scene.add(planetMesh);
 
     if (planet.moons > 0) {
-      for (let i = 0; i < planet.moons; i++) {
-        const moonGeometry = new THREE.SphereGeometry(
-          planet.moon.radius,
-          32,
-          32
-        );
+      // Ensure planet.moon is an array
+      const moons = Array.isArray(planet.moon) ? planet.moon : [planet.moon];
+
+      // Iterate over each moon for the planet
+      moons.forEach((moonData) => {
+        const moonGeometry = new THREE.SphereGeometry(moonData.radius, 32, 32);
         const moonMesh = new THREE.Mesh(moonGeometry, moonMaterial);
-        moonMesh.position.x = planet.moon.distance;
-        planetMesh.add(moonMesh);
-      }
+        moonMesh.position.x = moonData.distance; // Set moon distance from planet
+        planetMesh.add(moonMesh); // Attach moon to planet
+      });
     }
   });
 }
@@ -295,6 +183,8 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.25;
 controls.enableZoom = true;
+controls.maxDistance = 200;
+controls.minDistance = 20;
 
 // Handle window resizing
 window.addEventListener("resize", () => {
@@ -306,6 +196,9 @@ window.addEventListener("resize", () => {
 // Animation loop
 function animate() {
   requestAnimationFrame(animate);
+
+  // Rotate the Sun around its axis
+  sun.rotation.y += 0.0005; // Rotate Sun around Y axis (you can adjust the speed here)
 
   // Update controls for smooth damping
   controls.update();
