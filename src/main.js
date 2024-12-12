@@ -22,16 +22,40 @@ container.appendChild(renderer.domElement);
 const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
 const sphereMaterial = new THREE.MeshBasicMaterial();
 
-// Add Texture to Sphere
+// Create Sun Material and Add Texture to Sphere
 const textureLoader = new THREE.TextureLoader();
 const sunTexture = textureLoader.load("/textures/2k_sun.jpg");
 sphereMaterial.map = sunTexture;
+const sunMaterial = new THREE.MeshBasicMaterial({
+  map: sunTexture,
+  emissive: 0xffff00,
+});
+const sun = new THREE.Mesh(sphereGeometry, sunMaterial);
 
-// Create sphere
-const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+// Load Planets Texture
+const mercuryTexture = textureLoader.load("/textures/2k_mercury.jpg");
+const venusTexture = textureLoader.load("/textures/2k_venus_surface.jpg");
+const earthTexture = textureLoader.load("/textures/2k_earth_daymap.jpg");
+const marsTexture = textureLoader.load("/textures/2k_mars.jpg");
+const jupiterTexture = textureLoader.load("/textures/2k_jupiter.jpg");
+const saturnTexture = textureLoader.load("/textures/2k_saturn.jpg");
+const uranusTexture = textureLoader.load("/textures/2k_uranus.jpg");
+const neptuneTexture = textureLoader.load("/textures/2k_neptune.jpg");
+const moonTexture = textureLoader.load("/textures/2k_moon.jpg");
 
-// Add sphere to scene
-scene.add(sphere);
+// Create Planets Material
+const mercuryMaterial = new THREE.MeshBasicMaterial({ map: mercuryTexture });
+const venusMaterial = new THREE.MeshBasicMaterial({ map: venusTexture });
+const earthMaterial = new THREE.MeshBasicMaterial({ map: earthTexture });
+const marsMaterial = new THREE.MeshBasicMaterial({ map: marsTexture });
+const jupiterMaterial = new THREE.MeshBasicMaterial({ map: jupiterTexture });
+const saturnMaterial = new THREE.MeshBasicMaterial({ map: saturnTexture });
+const uranusMaterial = new THREE.MeshBasicMaterial({ map: uranusTexture });
+const neptuneMaterial = new THREE.MeshBasicMaterial({ map: neptuneTexture });
+const moonMaterial = new THREE.MeshBasicMaterial({ map: moonTexture });
+
+// Add Sun to scene
+scene.add(sun);
 
 // Set camera position
 camera.position.z = 5;
