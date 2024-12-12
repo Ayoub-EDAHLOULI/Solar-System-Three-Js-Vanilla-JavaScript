@@ -16,3 +16,6 @@ const renderer = new THREE.WebGLRenderer();
 const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
 const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+
+// Add sphere to scene
+scene.add(sphere);
