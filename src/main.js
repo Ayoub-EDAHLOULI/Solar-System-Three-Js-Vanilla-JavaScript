@@ -42,5 +42,15 @@ window.addEventListener("resize", () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// Render the scene
-renderer.render(scene, camera);
+// Animation loop
+function animate() {
+  requestAnimationFrame(animate);
+
+  // Update controls for smooth damping
+  controls.update();
+
+  // Render the scene
+  renderer.render(scene, camera);
+}
+
+animate();
